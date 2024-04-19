@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: biomeanalyzer
+Version: 0.0.1
+Summary: BiomeAnalyzer is a Python package for analyzing microbiome data.
+Author: 
+Author-email: 
+Requires-Python: >=3.9
+Requires-Dist: numpy
+Requires-Dist: pandas
