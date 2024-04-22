@@ -9,7 +9,7 @@ def get_treatments(df, legend_df):
 
     treatment = {}
 
-    for n in df.columns:
+    for n in df.index:
         n = n.split("-")[0]
         n = int(n)
         for i in legend_df["Indiv"]:
@@ -26,45 +26,46 @@ def add_treatments(df, legend_df):
 
     treatment = get_treatments(df, legend_df)
 
-    treatment_df = pd.DataFrame([treatment[int(c.split("-")[0])] for c in data.columns],columns=["Treatment"], index=data.columns)
+    treatment_df = pd.DataFrame([treatment[int(c.split("-")[0])] for c in data.columns],columns=["#CLASS"], index=data.columns)
     treatment_df = treatment_df.T
 
-    data = pd.concat([data.iloc[:0], treatment_df, data.iloc[0:]])  # concatenate the new dataframe with the treatments to the original one at the first row
+    data = pd.concat([data.iloc[:1], treatment_df, data.iloc[1:]])  # concatenate the new dataframe with the treatments to the original one at the first row
     return data
 
+#NOT NECESSARY AT THE MOMENT
+# def index_microorgansim_names(df):
+#
+#     names = []
+#
+#     for m in df.iloc[:, 0]:
+#
+#         taxa = m.split(";")
+#         n_taxa = len(taxa) - 1
+#         name = taxa[n_taxa]
+#         name = name.strip()
+#
+#         try:
+#             if name.split(" ")[1] == "sp":
+#                 name = name.strip() + "."
+#         except:
+#             pass
+#
+#         while name.strip() == "Unclassified":
+#             n_taxa -= 1
+#             name = taxa[n_taxa]
+#             name = name.strip()
+#
+#         if name.strip() != "No Hit":
+#             if name.strip() != "Treatment":
+#                 if name.strip() == taxa[n_taxa - 1].strip():
+#                     name += " (1)"
+#
+#         names.append(name)
+#
+#     return names
 
-def index_microorgansim_names(df):
 
-    names = []
-
-    for m in df.index:
-
-        taxa = m.split(";")
-        n_taxa = len(taxa) - 1
-        name = taxa[n_taxa]
-        name = name.strip()
-
-        try:
-            if name.split(" ")[1] == "sp":
-                name = name.strip() + "."
-        except:
-            pass
-
-        while name.strip() == "Unclassified":
-            n_taxa -= 1
-            name = taxa[n_taxa]
-            name = name.strip()
-
-        if name.strip() != "No Hit":
-            if name.strip() != "Treatment":
-                if name.strip() == taxa[n_taxa - 1].strip():
-                    name += " (1)"
-
-        names.append(name)
-
-    return names
-
-def microorganism_index (df):
-    names = index_microorgansim_names(df)
-    df.index = names
-    return df
+# def microorganism_index (df):
+    # names = index_microorgansim_names(df)
+    # df.index = names
+    # return df
