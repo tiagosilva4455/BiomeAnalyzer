@@ -33,14 +33,14 @@ def normalize_data(df):
 
     normalized_data = df.copy()
 
-    for n in df.index:
-        normalized_data.loc[n] = df.loc[n] / float(get_mean_copy_count(n))
+    #for n in df.index:
+    #   normalized_data.loc[n] = df.loc[n] / get_mean_copy_count(n)
+    normalized_data = normalized_data.apply(lambda row: row / get_mean_copy_count(row.name), axis=1)
 
-    total_w_copies = normalized_data.sum(axis=0)
+    total_w_copies = normalized_data.sum()
 
-    for n in normalized_data.index:
-        normalized_data.loc[n] = (100 * normalized_data.loc[n]) / total_w_copies
-
-    normalized_data = normalized_data
+    #for n in normalized_data.index:
+    #    normalized_data.loc[n] = (100 * normalized_data.loc[n]) / total_w_copies
+    normalized_data = normalized_data.apply(lambda row: (100 * row) / total_w_copies, axis=1)
 
     return normalized_data
