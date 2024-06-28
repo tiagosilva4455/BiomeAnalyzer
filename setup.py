@@ -7,7 +7,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     zip_safe=False,
-    install_requires=['numpy', 'pandas'],
+    install_requires=['numpy', 'pandas', 'scipy'],
     author='',
     author_email='',
     description='BiomeAnalyzer is a Python package for analyzing microbiome data.',

@@ -7,3 +7,4 @@ Author-email:
 Requires-Python: >=3.9
 Requires-Dist: numpy
 Requires-Dist: pandas
+Requires-Dist: scipy

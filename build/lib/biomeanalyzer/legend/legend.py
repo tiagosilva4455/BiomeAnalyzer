@@ -9,7 +9,7 @@ def get_treatments(df, legend_df):
 
     treatment = {}
 
-    for n in df.index:
+    for n in df.columns:
         n = n.split("-")[0]
         n = int(n)
         for i in legend_df["Indiv"]:
@@ -29,7 +29,7 @@ def add_treatments(df, legend_df):
     treatment_df = pd.DataFrame([treatment[int(c.split("-")[0])] for c in data.columns],columns=["#CLASS"], index=data.columns)
     treatment_df = treatment_df.T
 
-    data = pd.concat([data.iloc[:1], treatment_df, data.iloc[1:]])  # concatenate the new dataframe with the treatments to the original one at the first row
+    data = pd.concat([data.iloc[:0], treatment_df, data.iloc[0:]])  # concatenate the new dataframe with the treatments to the original one at the first row
     return data
 
 #NOT NECESSARY AT THE MOMENT

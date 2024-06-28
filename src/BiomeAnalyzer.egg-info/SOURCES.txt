@@ -20,3 +20,5 @@ src/biomeanalyzer/metaboanalyst_csv/__init__.py
 src/biomeanalyzer/metaboanalyst_csv/data_to_csv.py
 src/biomeanalyzer/normalization/__init__.py
 src/biomeanalyzer/normalization/copy_normalization.py
+src/biomeanalyzer/stats/__init__.py
+src/biomeanalyzer/stats/ttest_microrganisms.py
