@@ -1,8 +1,14 @@
 import pandas as pd
+from biomeanalyzer.io.data_preparation import prepare_data_novogene
 from biomeanalyzer.legend.legend import add_treatments #, microorganism_index
-from biomeanalyzer.normalization.copy_normalization import normalize_data
+from biomeanalyzer.Normalization import normalize_data
 
-def data_to_csv(df, legend_df, path_output, normalize=True):
+def data_to_csv(df, meta_df, path_output, normalize=True, lab = "Novogene"):
+
+    if lab == "Novogene":
+        df = prepare_data_novogene(df)
+    elif lab == "RTL":
+        pass
 
     if normalize == True:
         data = normalize_data(df)
@@ -10,22 +16,11 @@ def data_to_csv(df, legend_df, path_output, normalize=True):
         data = df
 
     data = data.astype(float)
-    print(data)
-    data = add_treatments(data, legend_df)
+    data = add_treatments(data, meta_df)
 
-    data_copy = data.reset_index()
-    data_copy = data_copy.rename(columns={'index': '#NAME'})
+    pd.DataFrame.to_csv(data, path_output + "/output_data.csv", sep=";", index=True)
 
-    legend = legend_df.drop(legend_df.columns[0], axis=1)
-    legend['Indiv'] = legend['Indiv'].apply(lambda x: str(x) + '-MS515F')
-
-    data_copy.iloc[1:,1:] = data_copy.iloc[1:,1:].astype(float)
-
-    pd.DataFrame.to_csv(data_copy, path_output + "output_data.csv", sep=",", index=False)
-    pd.DataFrame.to_csv(legend, path_output + "output_metadeta.csv", sep=",", index=False)
-
-    return f'Files saved in {path_output} as output_data.csv and output_metadata.csv'
-
+    return f'Files saved in {path_output} as output_data.csv'
 
 if __name__ == '__main__':
     data = pd.read_csv('/Users/tiago_silva/Documents/GitHub/BiomeAnalyzer/data/FullTaxa.species.percent.txt', sep='\t', index_col=0)

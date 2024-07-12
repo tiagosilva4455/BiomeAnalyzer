@@ -1,5 +1,4 @@
-import pandas as pd
-from biomeanalyzer.io.load_data import load_data, load_legend
+from biomeanalyzer.Data_IO import load_data, load_legend
 from biomeanalyzer.normalization.normalize_data import normalize_data
 
 

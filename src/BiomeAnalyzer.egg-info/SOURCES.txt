@@ -5,6 +5,11 @@ src/BiomeAnalyzer.egg-info/dependency_links.txt
 src/BiomeAnalyzer.egg-info/not-zip-safe
 src/BiomeAnalyzer.egg-info/requires.txt
 src/BiomeAnalyzer.egg-info/top_level.txt
+src/biomeanalyzer/Data_IO.py
+src/biomeanalyzer/Krona.py
+src/biomeanalyzer/LoadDatabase.py
+src/biomeanalyzer/Normalization.py
+src/biomeanalyzer/Stats.py
 src/biomeanalyzer/__init__.py
 src/biomeanalyzer.egg-info/PKG-INFO
 src/biomeanalyzer.egg-info/SOURCES.txt
@@ -12,13 +17,3 @@ src/biomeanalyzer.egg-info/dependency_links.txt
 src/biomeanalyzer.egg-info/not-zip-safe
 src/biomeanalyzer.egg-info/requires.txt
 src/biomeanalyzer.egg-info/top_level.txt
-src/biomeanalyzer/io/__init__.py
-src/biomeanalyzer/io/load_data.py
-src/biomeanalyzer/legend/__init__.py
-src/biomeanalyzer/legend/legend.py
-src/biomeanalyzer/metaboanalyst_csv/__init__.py
-src/biomeanalyzer/metaboanalyst_csv/data_to_csv.py
-src/biomeanalyzer/normalization/__init__.py
-src/biomeanalyzer/normalization/copy_normalization.py
-src/biomeanalyzer/stats/__init__.py
-src/biomeanalyzer/stats/ttest_microrganisms.py

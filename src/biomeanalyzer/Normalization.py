@@ -1,5 +1,4 @@
-import pandas as pd
-from biomeanalyzer.io.load_data import load_database
+from biomeanalyzer.LoadDatabase import load_database
 
 def get_mean_copy_count(m):
     

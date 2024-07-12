@@ -1,4 +1,4 @@
-from biomeanalyzer.Data_IO import load_database
+from biomeanalyzer.LoadDatabase import load_database
 
 def get_mean_copy_count(m):
     
