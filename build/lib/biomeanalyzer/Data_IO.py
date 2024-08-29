@@ -1,12 +1,24 @@
-import pandas as pd
-import os
+
 from pathlib import Path
 from biomeanalyzer.Normalization import normalize_data
+import pandas as pd
+import os
 
 
 def load_data(path_dataset, path_metadata):
-    dataset = pd.read_csv(path_dataset, sep=";", index_col=0)
-    metadata = pd.read_csv(path_metadata, sep=";")
+    # Determine the file extension and choose the appropriate pandas function
+    def read_file(path, type_data):
+        _, ext = os.path.splitext(path)
+        if ext == '.xlsx':
+            return pd.read_excel(path, engine='openpyxl', index_col=0 if type_data == 'dataset' else None)
+        elif ext == '.xls':
+            return pd.read_excel(path, engine='xlrd', index_col=0 if type_data == 'dataset' else None)
+        else:
+            return pd.read_csv(path, sep=";", index_col=0 if type_data == 'dataset' else None)
+
+    dataset = read_file(path_dataset, type_data='dataset')
+    metadata = read_file(path_metadata, type_data='metadata')
+
     return dataset, metadata
 
 
@@ -49,9 +61,7 @@ def add_treatments(data_df, meta_df):
     return updated_df
 
 
-#DATA TO CSV (MICROBIOME ANALYST)
-def data_to_csv(df, meta_df, normalize=True, lab="Novogene"):
-
+def arrange_data(df, meta_df, normalize=True, lab="Novogene"):
     if lab == "Novogene":
         df = prepare_data_novogene(df)
     elif lab == "RTL":
@@ -62,10 +72,19 @@ def data_to_csv(df, meta_df, normalize=True, lab="Novogene"):
     else:
         data = df
 
-    desktop = Path.home() / "Desktop"
     data = data.astype(float)
     data = add_treatments(data, meta_df)
 
-    pd.DataFrame.to_csv(data, desktop / "output_data.csv", sep=";", index=True)
+    return data
 
-    return f'Files saved in {desktop} as output_data.csv'
+
+#DATA TO CSV (MICROBIOME ANALYST)
+def data_to_csv(df, meta_df, normalize=True, lab="Novogene"):
+
+    data = arrange_data(df, meta_df, normalize, lab)
+
+    output_folder = Path.cwd()
+
+    pd.DataFrame.to_csv(data, output_folder / "output_data.csv", sep=";", index=True)
+
+    return f'Files saved in {output_folder} as output_data.csv'

@@ -17,3 +17,4 @@ src/biomeanalyzer.egg-info/dependency_links.txt
 src/biomeanalyzer.egg-info/not-zip-safe
 src/biomeanalyzer.egg-info/requires.txt
 src/biomeanalyzer.egg-info/top_level.txt
+src/biomeanalyzer/data/rrnDB-5.8_pantaxa_stats_NCBI.tsv

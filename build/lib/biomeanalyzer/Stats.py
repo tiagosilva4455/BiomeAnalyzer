@@ -20,12 +20,12 @@ def ttest_microorganisms(data: pd.DataFrame, group1: pd.DataFrame, group2: pd.Da
         data_stats = data_stats.groupby(data_stats["#NAME"]).sum()
 
 
-    elif taxon_level == "group":
-        # Check if there are more than 4 ";" and remove extra ones
+    elif taxon_level == "genus":
+        # Check if there are more than 5 ";" and remove extra ones
         def clean_name(name: str)->str:
             parts = name.split(";")
-            if len(parts) > 5:
-                return ";".join(parts[:5])
+            if len(parts) > 6:
+                return ";".join(parts[:6])
             return name
 
         data_stats.index = data_stats["#NAME"].map(clean_name)

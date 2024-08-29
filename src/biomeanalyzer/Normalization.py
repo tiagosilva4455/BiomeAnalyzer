@@ -1,6 +1,22 @@
+import pandas as pd
 from biomeanalyzer.LoadDatabase import load_database
 
-def get_mean_copy_count(m):
+
+def get_mean_copy_count(m: str) -> float:
+    """
+    Get the mean copy count for a microorganism.
+
+    Parameters
+    ----------
+    m : str
+        Microorganism name.
+
+    Returns
+    -------
+    mean_copy_count : float
+        Mean copy count for the microorganism.
+
+    """
     
     copy_number_db = load_database()
 
@@ -26,20 +42,28 @@ def get_mean_copy_count(m):
         mean_copy_count = copy_number_db.loc[copy_number_db['name'] == name, 'mean'].values[0]
         return mean_copy_count
     else:
-        return 1  #that n was not found in the dataset, therefore the value will be it self (1)
+        return 1  # that n was not found in the dataset, therefore the value will be it self (1)
 
-def normalize_data(df):
 
+def normalize_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize the data.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe with microbiome data to be normalized.
+
+    Returns
+    -------
+    normalized_data : pd.DataFrame
+        Normalized data.
+
+    """
     normalized_data = df.copy()
-
-    #for n in df.index:
-    #   normalized_data.loc[n] = df.loc[n] / get_mean_copy_count(n)
     normalized_data = normalized_data.apply(lambda row: row / get_mean_copy_count(row.name), axis=1)
 
     total_w_copies = normalized_data.sum()
-
-    #for n in normalized_data.index:
-    #    normalized_data.loc[n] = (100 * normalized_data.loc[n]) / total_w_copies
     normalized_data = normalized_data.apply(lambda row: (100 * row) / total_w_copies, axis=1)
 
     return normalized_data

@@ -4,12 +4,16 @@ import os
 import tempfile
 import shutil
 from pathlib import Path
+from biomeanalyzer.Data_IO import arrange_data
 
 
-def make_kronas(dataset):
+def make_kronas(df, meta_df, normalize=True, lab="Novogene"):
+
+    dataset = arrange_data(df, meta_df, normalize=normalize, lab=lab)
+
     temp_dir = tempfile.mkdtemp()  # Create a temporary directory to store the split files
     split_dataset(dataset, temp_dir)  # Split the dataset into multiple files
-    temp_list = [f for f in os.listdir(temp_dir) if f.endswith('.csv')]  # List files in the temporary directory .csv
+    temp_list = sorted([f for f in os.listdir(temp_dir) if f.endswith('.csv')])  # List files in the temporary directory .csv
     input_file_list_path = os.path.join(temp_dir, 'input_files.txt')  # Make the absolute path to the file list
 
     # Write the list of input files to a file with their full paths
@@ -40,9 +44,9 @@ def make_kronas(dataset):
     # Move the Krona to the desktop
     try:
         output_file_path = os.path.join(temp_dir, output_file)
-        desktop_output = desktop / output_file
-        shutil.move(output_file_path, desktop_output)
-        print(f"Krona moved to {desktop}")
+        output_folder = Path.cwd()
+        shutil.move(output_file_path, output_folder)
+        print(f"Krona moved to {output_folder}")
     except Exception as e:
         print(f"An error occurred while moving the Krona to the desktop: {e}")
 
