@@ -4,6 +4,26 @@ from scipy.stats import ttest_rel
 
 def ttest_microorganisms(data: pd.DataFrame, group1: pd.DataFrame, group2: pd.DataFrame,
                          taxon_level: str) -> pd.DataFrame:
+    """
+    Perform a paired t-test to compare the growth of microorganisms between 2 groups.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataframe with microbiome data.
+    group1 : pd.DataFrame
+        List of columns for the first group.
+    group2 : pd.DataFrame
+        List of columns for the second group.
+    taxon_level : str
+        Taxonomic level of the data.
+
+    Returns
+    -------
+    significant_microorganisms : pd.DataFrame
+        Dataframe with the most significantly grown or declined microorganisms.
+
+    """
     data_stats = data.copy()
     stats = pd.DataFrame()
 
@@ -12,8 +32,8 @@ def ttest_microorganisms(data: pd.DataFrame, group1: pd.DataFrame, group2: pd.Da
     data_stats.columns = data_stats.columns.str.strip()  # Remove leading and trailing whitespaces from column names
 
     for col in group1 + group2:
-        data_stats[col] = pd.to_numeric(data_stats[col],
-                                        errors='coerce')  # Convert all relevant columns to numeric, forcing errors to NaN
+        data_stats[col] = pd.to_numeric(data_stats[col],errors='coerce')
+        # Convert all relevant columns to numeric, forcing errors to NaN
 
     if taxon_level == "species":
         # Check for repeated indexes and combine them
@@ -59,49 +79,23 @@ def ttest_microorganisms(data: pd.DataFrame, group1: pd.DataFrame, group2: pd.Da
     significant_microorganisms.set_index("#NAME", inplace=True)
     return significant_microorganisms
 
-#import pandas as pd
-#from scipy.stats import ttest_rel
 
-#def ttest_microorganisms (data:pd.DataFrame, group1:pd.DataFrame , group2:pd.DataFrame):
+def determine_direction(row: pd.Series) -> str:
+    """
+    Determine the direction of change (growth or decline).
 
- #   data_stats = data.copy()
-  #  stats = pd.DataFrame()
+    Parameters
+    ----------
+    row : pd.Series
+        Row of a DataFrame.
 
-   # if data_stats.index[1] == "#CLASS":
-    #    data_stats = data_stats[1:] # this step will happen after normalization
-   # data_stats.columns = data_stats.columns.str.strip() # Remove leading and trailing whitespaces from column names
-    
-   # for col in group1 + group2:
-    #    data_stats[col] = pd.to_numeric(data_stats[col], errors='coerce') # Convert all relevant columns to numeric, forcing errors to NaN
-    
-    #data_clean = data_stats.dropna(subset=group1 + group2)# Drop rows with any NaN values
-    
-    #g1_means = data_clean[group1].mean(axis=1) # Calculate the mean for the 2 groups
-    #g2_means = data_clean[group2].mean(axis=1)
-    
-    #stats['difference'] = g2_means - g1_means # Calculate the difference (growth or decline)
-    
-    # Perform paired t-test to compare the growth between 2 groups
-    #t_stat, p_values = ttest_rel(data_clean[group1], data_clean[group2], axis=1)
+    Returns
+    -------
+    str
+        The direction of change.
 
-    #stats['p_value'] = p_values
-    #stats['#NAME'] = data_clean['#NAME']
+    """
 
-    # Determine the direction of change (growth or decline)
-    #stats['direction'] = stats.apply(determine_direction, axis=1)
-
-    # Filter for significant p-values (e.g., p < 0.05)
-    #significant_microorganisms = stats[stats['p_value'] < 0.05]
-
-    # Sort by p-value
-    #significant_microorganisms = significant_microorganisms.sort_values(by='p_value')
-
-    # Display the most significantly grown or declined microorganisms
-    #significant_microorganisms[['#NAME', 'difference', 'direction', 'p_value']]
-    #significant_microorganisms.set_index("#NAME", inplace=True)
-    #return significant_microorganisms
-
-def determine_direction(row:str):
     if row['p_value'] < 0.001:
         return '+++' if row['difference'] > 0 else '---'
     elif row['p_value'] < 0.01:
@@ -111,13 +105,38 @@ def determine_direction(row:str):
     else:
         return 'growth' if row['difference'] > 0 else 'decline'
 
-def clean_name(name: str, n_maintain:int) -> str:
+def clean_name(name: str, n_maintain:int) -> str: # Não uso isto em lado nenhum?
+    """
+    Clean the name.
+
+    Parameters
+    ----------
+    name : str
+        Name to be cleaned.
+    """
     parts = name.split(";")
     if len(parts) > n_maintain:
         return ";".join(parts[:n_maintain])
     return name
 
+
 def join_direction_df(dataframes: list[pd.DataFrame], dataframes_names=list[str]) -> pd.DataFrame:
+    """
+    Join DataFrames containing the direction of change for each group.
+
+    Parameters
+    ----------
+    dataframes : list[pd.DataFrame]
+        List of DataFrames containing the direction of change for each group.
+    dataframes_names : list[str]
+        List of names for each DataFrame.
+
+    Returns
+    -------
+    result : pd.DataFrame
+        DataFrame containing the direction of change for each group.
+
+    """
 
     # Rename 'direction' column in each DataFrame
     if len(dataframes) == len(dataframes_names):

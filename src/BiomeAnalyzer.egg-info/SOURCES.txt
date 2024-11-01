@@ -7,10 +7,11 @@ src/BiomeAnalyzer.egg-info/requires.txt
 src/BiomeAnalyzer.egg-info/top_level.txt
 src/biomeanalyzer/Data_IO.py
 src/biomeanalyzer/Krona.py
-src/biomeanalyzer/LoadDatabase.py
 src/biomeanalyzer/Normalization.py
 src/biomeanalyzer/Stats.py
+src/biomeanalyzer/TaxId.py
 src/biomeanalyzer/__init__.py
+src/biomeanalyzer/load_database.py
 src/biomeanalyzer.egg-info/PKG-INFO
 src/biomeanalyzer.egg-info/SOURCES.txt
 src/biomeanalyzer.egg-info/dependency_links.txt
@@ -18,3 +19,4 @@ src/biomeanalyzer.egg-info/not-zip-safe
 src/biomeanalyzer.egg-info/requires.txt
 src/biomeanalyzer.egg-info/top_level.txt
 src/biomeanalyzer/data/rrnDB-5.8_pantaxa_stats_NCBI.tsv
+src/biomeanalyzer/data/taxonomy.tsv

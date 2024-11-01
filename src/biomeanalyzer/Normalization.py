@@ -1,5 +1,5 @@
 import pandas as pd
-from biomeanalyzer.LoadDatabase import load_database
+from biomeanalyzer.load_database import load_database
 
 
 def get_mean_copy_count(m: str) -> float:
@@ -64,6 +64,6 @@ def normalize_data(df: pd.DataFrame) -> pd.DataFrame:
     normalized_data = normalized_data.apply(lambda row: row / get_mean_copy_count(row.name), axis=1)
 
     total_w_copies = normalized_data.sum()
-    normalized_data = normalized_data.apply(lambda row: (100 * row) / total_w_copies, axis=1)
+    normalized_data = normalized_data.apply(lambda column: (100 * column) / total_w_copies, axis=1)
 
     return normalized_data

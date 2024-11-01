@@ -7,13 +7,32 @@ from pathlib import Path
 from biomeanalyzer.Data_IO import arrange_data
 
 
-def make_kronas(df, meta_df, normalize=True, lab="Novogene"):
+def make_kronas(df: pd.DataFrame, meta_df: pd.DataFrame, normalize: bool = True, lab: str = "Novogene"):
+    """
+    Make Krona plots from the microbiome data.
 
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The microbiome data.
+    meta_df : pd.DataFrame
+        The metadata.
+    normalize : bool, optional
+        Normalize the data, by default True.
+    lab : str, optional
+        The laboratory where the data was generated, by default
+        "Novogene".
+
+    Returns
+    -------
+    None
+    """
     dataset = arrange_data(df, meta_df, normalize=normalize, lab=lab)
 
     temp_dir = tempfile.mkdtemp()  # Create a temporary directory to store the split files
     split_dataset(dataset, temp_dir)  # Split the dataset into multiple files
-    temp_list = sorted([f for f in os.listdir(temp_dir) if f.endswith('.csv')])  # List files in the temporary directory .csv
+    temp_list = sorted([f for f in os.listdir(temp_dir) if f.endswith('.csv')])
+    # List files in the temporary directory .csv
     input_file_list_path = os.path.join(temp_dir, 'input_files.txt')  # Make the absolute path to the file list
 
     # Write the list of input files to a file with their full paths
@@ -55,7 +74,22 @@ def make_kronas(df, meta_df, normalize=True, lab="Novogene"):
     print(f"Temporary working directory {temp_dir} deleted")
 
 
-def split_dataset(dataset, path):
+def split_dataset(dataset: pd.DataFrame, path: str)-> None:
+    """
+    Split the dataset into multiple files.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset to split.
+    path : str
+        The path to save the split files.
+
+    Returns
+    -------
+    None
+    """
+
     data_to_split = split_taxonomy(dataset)
 
     for col_name in data_to_split.columns[:-7]:
@@ -64,6 +98,20 @@ def split_dataset(dataset, path):
 
 
 def split_taxonomy(dataset):
+    """
+    Split the taxonomy of the dataset.
+
+    Parameters
+    ----------
+    dataset : pd.DataFrame
+        The dataset to split.
+
+    Returns
+    -------
+    pd.DataFrame
+        The dataset with the taxonomy split.
+
+    """
     data_copy = dataset.copy() # Copy the dataset to avoid modifying the original
 
     if '#CLASS' in dataset.columns:
@@ -83,7 +131,20 @@ def split_taxonomy(dataset):
     return krona_data
 
 
-def clean_taxons(string):  # Auxiliary function to clean the taxons
+def clean_taxons(string: str) -> str:
+    """
+    Clean the taxons.
+
+    Parameters
+    ----------
+    string : str
+        The string to clean.
+
+    Returns
+    -------
+    str
+        The cleaned string.
+    """
     if string == "s__":
         string = "sp."
     elif "__" in string:

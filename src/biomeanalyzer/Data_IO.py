@@ -4,6 +4,7 @@ import pandas as pd
 import os
 
 
+
 def read_file(path: str, type_data: str) -> pd.DataFrame:
     """
     Read a file into a pandas DataFrame.
