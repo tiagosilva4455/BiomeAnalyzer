@@ -13,9 +13,9 @@ BiomeAnalyzer is a Python-based tool designed to analyze ecological biomes, proc
 
 Install the BiomeAnalyzer:
 
-'''{python}
+```python
 pip install BiomeAnalyzer
-'''
+```
 
 ## Usage
 
