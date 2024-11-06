@@ -19,7 +19,48 @@ pip install BiomeAnalyzer
 
 ## Usage
 
-To start using BiomeAnalyzer, run the main script in the src folder:
+BiomeAnzlyzer can be used in the following way:
+
+If you want to load your data and metadata file in and simply retrieve the files ready for MicrobiomeAnalyst:
+
+```python
+from biomeanalyzer.Data_IO import load_data, data_to_csv
+
+# Loading the data and metadata
+
+data_path = 'paste the data path here'
+metadata_path = 'paste the metadata path here'
+
+data, metadata = load_data(data_path, metadata_path)
+
+# Transform and normalize data
+data_to_csv(data, metadata, normalize=True, lab='Novogene') 
+```
+Future updates will not need the the lab verbose, as a template will be provided, much like it is already done with the metadata.
+Normalization can also be turned off.
+
+To make a krona plot with all the samples within it:
+
+```python
+from biomeanalyzer.Krona import make_kronas
+
+make_kronas(data, metadata)
+```
+
+For proteome retrieval, use:
+
+```python
+from biomeanalyzer.Data_IO import load_data
+from biomeanalyzer.TaxId import get_proteomes_from_df
+
+normalized_data_path = 'paste the data path here'
+metadata_path = 'paste the metadata path here'
+
+data, metadata = load_data(data_path, metadata_path)
+
+get_proteomes_from_df(data, "proteome_folder_name")
+```
+The proteomes obtained can then be used in the reCOGnizer and UPIMAPI packages for example, that then will give you the information to use in KEGGCharter
 
 ## Folder Structure
 
